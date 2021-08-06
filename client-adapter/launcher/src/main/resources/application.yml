@@ -17,7 +17,7 @@ canal.conf:
   secretKey:
   consumerProperties:
     # canal tcp consumer
-    canal.tcp.server.host: 127.0.0.1:11111
+    canal.tcp.server.host: 47.96.78.235:8000
     canal.tcp.zookeeper.hosts:
     canal.tcp.batch.size: 500
     canal.tcp.username:
@@ -46,51 +46,68 @@ canal.conf:
     rabbitmq.password:
     rabbitmq.resource.ownerId:
 
-#  srcDataSources:
-#    defaultDS:
-#      url: jdbc:mysql://127.0.0.1:3306/mytest?useUnicode=true
-#      username: root
-#      password: 121212
+  srcDataSources:
+    defaultDS:
+      url: jdbc:mysql://47.96.78.235:6000/bc_mall_sp?useUnicode=true&useSSL=false&serverTimezone=GMT%2B8
+      username: root
+      password: zaq12345
   canalAdapters:
-  - instance: example # canal instance Name or mq topic name
-    groups:
-    - groupId: g1
-      outerAdapters:
-      - name: logger
-#      - name: rdb
-#        key: mysql1
-#        properties:
-#          jdbc.driverClassName: com.mysql.jdbc.Driver
-#          jdbc.url: jdbc:mysql://127.0.0.1:3306/mytest2?useUnicode=true
-#          jdbc.username: root
-#          jdbc.password: 121212
-#      - name: rdb
-#        key: oracle1
-#        properties:
-#          jdbc.driverClassName: oracle.jdbc.OracleDriver
-#          jdbc.url: jdbc:oracle:thin:@localhost:49161:XE
-#          jdbc.username: mytest
-#          jdbc.password: m121212
-#      - name: rdb
-#        key: postgres1
-#        properties:
-#          jdbc.driverClassName: org.postgresql.Driver
-#          jdbc.url: jdbc:postgresql://localhost:5432/postgres
-#          jdbc.username: postgres
-#          jdbc.password: 121212
-#          threads: 1
-#          commitSize: 3000
-#      - name: hbase
-#        properties:
-#          hbase.zookeeper.quorum: 127.0.0.1
-#          hbase.zookeeper.property.clientPort: 2181
-#          zookeeper.znode.parent: /hbase
-#      - name: es
-#        hosts: 127.0.0.1:9300 # 127.0.0.1:9200 for rest mode
-#        properties:
-#          mode: transport # or rest
-#          # security.auth: test:123456 #  only used for rest mode
-#          cluster.name: elasticsearch
+    - instance: example # canal instance Name or mq topic name
+      groups:
+        - groupId: g1
+          outerAdapters:
+            #      - name: logger
+            #      - name: rdb
+            #        key: mysql1
+            #        properties:
+            #          jdbc.driverClassName: com.mysql.jdbc.Driver
+            #          jdbc.url: jdbc:mysql://127.0.0.1:3306/mytest2?useUnicode=true
+            #          jdbc.username: root
+            #          jdbc.password: 121212
+            #      - name: rdb
+            #        key: oracle1
+            #        properties:
+            #          jdbc.driverClassName: oracle.jdbc.OracleDriver
+            #          jdbc.url: jdbc:oracle:thin:@localhost:49161:XE
+            #          jdbc.username: mytest
+            #          jdbc.password: m121212
+            #      - name: rdb
+            #        key: postgres1
+            #        properties:
+            #          jdbc.driverClassName: org.postgresql.Driver
+            #          jdbc.url: jdbc:postgresql://localhost:5432/postgres
+            #          jdbc.username: postgres
+            #          jdbc.password: 121212
+            #          threads: 1
+            #          commitSize: 3000
+            #      - name: hbase
+            #        properties:
+            #          hbase.zookeeper.quorum: 127.0.0.1
+            #          hbase.zookeeper.property.clientPort: 2181
+            #          zookeeper.znode.parent: /hbase
+            - name: es6
+              key: goods
+              hosts: 192.168.31.253:9200 # 127.0.0.1:9200 for rest mode
+              properties:
+                mode: rest # or rest
+                # security.auth: test:123456 #  only used for rest mode
+                cluster.name: es-cluster
+            - name: es6
+              key: bi_mq_info # 对应es6中test.yml
+              # transport模式，hosts中的端口要用9300；用rest模式，hosts中的端口要用9200
+              hosts: 192.168.31.253:9200 # 127.0.0.1:9200 for rest mode
+              properties:
+                mode: rest # or rest
+                # security.auth: test:123456 #  only used for rest mode
+                cluster.name: es-cluster
+            - name: es6
+              key: orders # 对应es6中test.yml
+              # transport模式，hosts中的端口要用9300；用rest模式，hosts中的端口要用9200
+              hosts: 192.168.31.253:9200 # 127.0.0.1:9200 for rest mode
+              properties:
+                mode: rest # or rest
+                # security.auth: test:123456 #  only used for rest mode
+                cluster.name: es-cluster
 #        - name: kudu
 #          key: kudu
 #          properties:

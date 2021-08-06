@@ -1,0 +1,27 @@
+dataSourceKey: defaultDS
+outerAdapterKey: bi_mq_info
+destination: example
+groupId: g1
+esMapping:
+  _index: bi_mq_info_v2
+  _type: _doc
+  _id: id
+  upsert: true
+  sql: "select bmi.id           as id,
+       bmi.cmd_code     as cmd_code,
+       bmi.req_code     as req_code,
+       bmi.mdc          as mdc,
+       bmi.uuid         as uuid,
+       bmi.pre_cmd_code as pre_cmd_code,
+       bmi.pre_req_code as pre_req_code,
+       bmi.pre_uuid     as pre_uuid,
+        bmi.status       as status,
+       bmi.mq_info as mq_info,
+       bmi.error_msg    as error_msg,
+       bmi.created_date as created_date,
+       bmi.exec_date    as exec_date
+from bi_mq_info bmi"
+  etlCondition: "where a.c_time>={}"
+  commitBatch: 1
+  #objFields:
+  #  labels: array:;

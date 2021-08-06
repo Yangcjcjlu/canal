@@ -1,0 +1,74 @@
+dataSourceKey: defaultDS
+outerAdapterKey: orders
+destination: example
+groupId: g1
+esMapping:
+  _index: orders_v3
+  _type: orders_latest
+  _id: id
+  upsert: true
+  sql: "select
+    o.id as id,
+    o.order_type as orderType,
+    o.activity_id as activityId,
+    o.parent_id as parentId,
+    o.is_parent as isParent,
+    o.is_upgrade as isUpgrade,
+    o.upgrade_id as upgradeId,
+    o.mch_id as mchId,
+    o.shop_id as shopId,
+    o.supplier_id as supplierId,
+    o.goods_mch_id as goodsMchId,
+    o.sales_member_id as salesMemberId,
+    o.order_member_id as orderMemberId,
+    o.customer_id as customerId,
+    o.order_no as orderNo,
+    o.scm_order_no as scmOrderNo,
+    o.order_source as orderSource,
+    o.payment_channel as paymentChannel,
+    o.payment_id as paymentId,
+    o.transfer_id as transferId,
+    o.address_id as addressId,
+    o.shipping_type as shippingType,
+    o.logistics_id as logisticsId,
+    o.warehouse_id as warehouseId,
+    o.invoice_id as invoiceId,
+    o.sub_order_count as subOrderCount,
+    o.order_amount as orderAmount,
+    o.goods_count as goodsCount,
+    o.return_count as returnCount,
+    o.freight as freight,
+    o.pallet_amount as palletAmount,
+    o.quote_currency as quoteCurrency,
+    o.quote_currency_amount as quoteCurrencyAmount,
+    o.pay_amount as payAmount,
+    o.coupon_deduction_amount as couponDeductionAmount,
+    o.mkt_deduction_amount as mktDeductionAmount,
+    o.points_deduction_amount as pointsDeductionAmount,
+    o.return_amount as returnAmount,
+    o.supply_amount as supplyAmount,
+    o.open_return as openReturn,
+    o.unfinished_return_bill as unfinishedReturnBill,
+    o.order_status as orderStatus,
+    o.jd_status as jdStatus,
+    o.close_date as closeDate,
+    o.close_reason as closeReason,
+    o.remark as remark,
+    o.send_remark as sendRemark,
+    o.image_remark as imageRemark,
+    o.is_exception as isException,
+    o.is_scm as isScm,
+    o.is_can_split as isCanSplit,
+    o.is_auto_submit as isAutoSubmit,
+    o.is_receive_package_later as isReceivePackageLater,
+    o.exception as exception,
+    o.data_status as dataStatus,
+    o.created_date as createdDate,
+    o.modified_date as modifiedDate,
+    o.created_by as createdBy,
+    o.modified_by as modifiedBy
+    from orders o"
+  etlCondition: "where a.c_time>={}"
+  commitBatch: 1
+  #objFields:
+  #  labels: array:;

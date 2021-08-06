@@ -1,0 +1,71 @@
+dataSourceKey: defaultDS
+outerAdapterKey: goods
+destination: example
+groupId: g1
+esMapping:
+  _index: goods_v1
+  _type: _doc
+  _id: id
+  upsert: true
+  sql: "select g.id as id,
+    g.mch_id as mchId,
+    g.supplier_id as supplierId,
+    g.shop_id as shopId,
+    g.scm_goods_id as scmGoodsId,
+    g.is_personal_scm as isPersonalScm,
+    g.version as version,
+    g.cat_id as catId,
+    g.wm_id as wmId,
+    g.goods_type as goodsType,
+    g.rebate_cat_id as rebateCatId,
+    g.title as title,
+    g.sub_title as subTitle,
+    g.goods_no as goodsNo,
+    g.goods_code as goodsCode,
+    g.brand_id as brandId,
+    g.quote_currency as quoteCurrency,
+    g.weight as weight,
+    g.purchase_price as purchasePrice,
+    g.cost_price as costPrice,
+    g.suggested_price as suggestedPrice,
+    g.original_price as originalPrice,
+    g.sale_price as salePrice,
+    g.store_collect_count as storeCollectCount,
+    g.sku_volume as skuVolume,
+    g.sales_volume as salesVolume,
+    g.is_offline as isOffline,
+    g.level_id as levelId,
+    g.salable_level_id as salableLevelId,
+    g.upgrade_time_point as upgradeTimePoint,
+    g.upgrade_time as upgradeTime,
+    g.is_custom as isCustom,
+    g.is_open_cloud_warehouse as isOpenCloudWarehouse,
+    g.is_cross_border as isCrossBorder,
+    g.open_cloud_deduction as openCloudDeduction,
+    g.open_return as openReturn,
+    g.region_ctrl_postion as regionCtrlPostion,
+    g.open_points as openPoints,
+    g.gift_points as giftPoints,
+    g.max_deduct_points as maxDeductPoints,
+    g.points_of_full as pointsOfFull,
+    g.money_of_full as moneyOfFull,
+    g.open_partial_deduction as openPartialDeduction,
+    g.freight_template_id as freightTemplateId,
+    g.stock_warning as stockWarning,
+    g.sort as sort,
+    g.reject_remark as rejectRemark,
+    g.remark as remark,
+    g.status as status,
+    g.data_status as dataStatus,
+    g.created_date as createdDate,
+    g.modified_date as modifiedDate,
+    g.created_by as createdBy,
+    g.modified_by as modifiedBy,
+    g.read_count as readCount,
+    g.must_buy_quantity as mustBuyQuantity,
+    g.scm_audit_status as scmAuditStatus
+    from goods g"
+  etlCondition: "where a.c_time>={}"
+  commitBatch: 1
+  #objFields:
+  #  labels: array:;
