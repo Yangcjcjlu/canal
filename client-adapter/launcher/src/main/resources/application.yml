@@ -52,10 +52,32 @@ canal.conf:
       username: root
       password: zaq12345
   canalAdapters:
-    - instance: example # canal instance Name or mq topic name
+    #    - instance: example # canal instance Name or mq topic name
+    #      groups:
+
+    - instance: example
       groups:
+#        - groupId: g1
+#          outerAdapters:
+
         - groupId: g1
           outerAdapters:
+#            - name: es6
+#              key: orders_item # 对应es6中test.yml
+#              # transport模式，hosts中的端口要用9300；用rest模式，hosts中的端口要用9200
+#              hosts: 192.168.31.253:9200 # 127.0.0.1:9200 for rest mode
+#              properties:
+#                mode: rest # or rest
+#                # security.auth: test:123456 #  only used for rest mode
+#                cluster.name: es-cluster
+            - name: es6
+              key: orders # 对应es6中test.yml
+              # transport模式，hosts中的端口要用9300；用rest模式，hosts中的端口要用9200
+              hosts: 192.168.31.253:9200 # 127.0.0.1:9200 for rest mode
+              properties:
+                mode: rest # or rest
+                # security.auth: test:123456 #  only used for rest mode
+                cluster.name: es-cluster
             #      - name: logger
             #      - name: rdb
             #        key: mysql1
@@ -85,29 +107,22 @@ canal.conf:
             #          hbase.zookeeper.quorum: 127.0.0.1
             #          hbase.zookeeper.property.clientPort: 2181
             #          zookeeper.znode.parent: /hbase
-            - name: es6
-              key: goods
-              hosts: 192.168.31.253:9200 # 127.0.0.1:9200 for rest mode
-              properties:
-                mode: rest # or rest
-                # security.auth: test:123456 #  only used for rest mode
-                cluster.name: es-cluster
-            - name: es6
-              key: bi_mq_info # 对应es6中test.yml
-              # transport模式，hosts中的端口要用9300；用rest模式，hosts中的端口要用9200
-              hosts: 192.168.31.253:9200 # 127.0.0.1:9200 for rest mode
-              properties:
-                mode: rest # or rest
-                # security.auth: test:123456 #  only used for rest mode
-                cluster.name: es-cluster
-            - name: es6
-              key: orders # 对应es6中test.yml
-              # transport模式，hosts中的端口要用9300；用rest模式，hosts中的端口要用9200
-              hosts: 192.168.31.253:9200 # 127.0.0.1:9200 for rest mode
-              properties:
-                mode: rest # or rest
-                # security.auth: test:123456 #  only used for rest mode
-                cluster.name: es-cluster
+#            - name: es6
+#              key: goods
+#              hosts: 192.168.31.253:9200 # 127.0.0.1:9200 for rest mode
+#              properties:
+#                mode: rest # or rest
+#                # security.auth: test:123456 #  only used for rest mode
+#                cluster.name: es-cluster
+            #            - name: es6
+            #              key: bi_mq_info # 对应es6中test.yml
+            #              # transport模式，hosts中的端口要用9300；用rest模式，hosts中的端口要用9200
+            #              hosts: 192.168.31.253:9200 # 127.0.0.1:9200 for rest mode
+            #              properties:
+            #                mode: rest # or rest
+            #                # security.auth: test:123456 #  only used for rest mode
+            #                cluster.name: es-cluster
+
 #        - name: kudu
 #          key: kudu
 #          properties:

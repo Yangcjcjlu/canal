@@ -7,7 +7,8 @@ esMapping:
   _type: _doc
   _id: id
   upsert: true
-  sql: "select g.id as id,
+  sql: "select
+    g.id as id,
     g.mch_id as mchId,
     g.supplier_id as supplierId,
     g.shop_id as shopId,
@@ -66,6 +67,6 @@ esMapping:
     g.scm_audit_status as scmAuditStatus
     from goods g"
   etlCondition: "where a.c_time>={}"
-  commitBatch: 1
+  commitBatch: 3000
   #objFields:
   #  labels: array:;

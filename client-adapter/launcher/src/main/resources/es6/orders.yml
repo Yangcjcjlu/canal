@@ -3,72 +3,122 @@ outerAdapterKey: orders
 destination: example
 groupId: g1
 esMapping:
-  _index: orders_v3
+  _index: orders_v15
   _type: orders_latest
   _id: id
   upsert: true
-  sql: "select
-    o.id as id,
-    o.order_type as orderType,
-    o.activity_id as activityId,
-    o.parent_id as parentId,
-    o.is_parent as isParent,
-    o.is_upgrade as isUpgrade,
-    o.upgrade_id as upgradeId,
-    o.mch_id as mchId,
-    o.shop_id as shopId,
-    o.supplier_id as supplierId,
-    o.goods_mch_id as goodsMchId,
-    o.sales_member_id as salesMemberId,
-    o.order_member_id as orderMemberId,
-    o.customer_id as customerId,
-    o.order_no as orderNo,
-    o.scm_order_no as scmOrderNo,
-    o.order_source as orderSource,
-    o.payment_channel as paymentChannel,
-    o.payment_id as paymentId,
-    o.transfer_id as transferId,
-    o.address_id as addressId,
-    o.shipping_type as shippingType,
-    o.logistics_id as logisticsId,
-    o.warehouse_id as warehouseId,
-    o.invoice_id as invoiceId,
-    o.sub_order_count as subOrderCount,
-    o.order_amount as orderAmount,
-    o.goods_count as goodsCount,
-    o.return_count as returnCount,
-    o.freight as freight,
-    o.pallet_amount as palletAmount,
-    o.quote_currency as quoteCurrency,
-    o.quote_currency_amount as quoteCurrencyAmount,
-    o.pay_amount as payAmount,
-    o.coupon_deduction_amount as couponDeductionAmount,
-    o.mkt_deduction_amount as mktDeductionAmount,
-    o.points_deduction_amount as pointsDeductionAmount,
-    o.return_amount as returnAmount,
-    o.supply_amount as supplyAmount,
-    o.open_return as openReturn,
-    o.unfinished_return_bill as unfinishedReturnBill,
-    o.order_status as orderStatus,
-    o.jd_status as jdStatus,
-    o.close_date as closeDate,
-    o.close_reason as closeReason,
-    o.remark as remark,
-    o.send_remark as sendRemark,
-    o.image_remark as imageRemark,
-    o.is_exception as isException,
-    o.is_scm as isScm,
-    o.is_can_split as isCanSplit,
-    o.is_auto_submit as isAutoSubmit,
-    o.is_receive_package_later as isReceivePackageLater,
-    o.exception as exception,
-    o.data_status as dataStatus,
-    o.created_date as createdDate,
-    o.modified_date as modifiedDate,
-    o.created_by as createdBy,
-    o.modified_by as modifiedBy
-    from orders o"
+  sql: "select o.id                        as id,
+       o.order_type                as orderType,
+       o.activity_id               as activityId,
+       o.parent_id                 as parentId,
+       o.is_parent                 as isParent,
+       o.is_upgrade                as isUpgrade,
+       o.upgrade_id                as upgradeId,
+       o.mch_id                    as mchId,
+       o.shop_id                   as shopId,
+       o.supplier_id               as supplierId,
+       o.goods_mch_id              as goodsMchId,
+       o.sales_member_id           as salesMemberId,
+       o.order_member_id           as orderMemberId,
+       o.customer_id               as customerId,
+       o.order_no                  as orderNo,
+       o.scm_order_no              as scmOrderNo,
+       o.order_source              as orderSource,
+       o.payment_channel           as paymentChannel,
+       o.payment_id                as paymentId,
+       o.transfer_id               as transferId,
+       o.address_id                as addressId,
+       o.shipping_type             as shippingType,
+       o.logistics_id              as logisticsId,
+       o.warehouse_id              as warehouseId,
+       o.invoice_id                as invoiceId,
+       o.sub_order_count           as subOrderCount,
+       o.order_amount              as orderAmount,
+       o.goods_count               as goodsCount,
+       o.return_count              as returnCount,
+       o.freight                   as freight,
+       o.pallet_amount             as palletAmount,
+       o.quote_currency            as quoteCurrency,
+       o.quote_currency_amount     as quoteCurrencyAmount,
+       o.pay_amount                as payAmount,
+       o.coupon_deduction_amount   as couponDeductionAmount,
+       o.mkt_deduction_amount      as mktDeductionAmount,
+       o.points_deduction_amount   as pointsDeductionAmount,
+       o.return_amount             as returnAmount,
+       o.supply_amount             as supplyAmount,
+       o.open_return               as openReturn,
+       o.unfinished_return_bill    as unfinishedReturnBill,
+       o.order_status              as orderStatus,
+       o.jd_status                 as jdStatus,
+       o.close_date                as closeDate,
+       o.close_reason              as closeReason,
+       o.remark                    as remark,
+       o.send_remark               as sendRemark,
+       o.image_remark              as imageRemark,
+       o.is_exception              as isException,
+       o.is_scm                    as isScm,
+       o.is_can_split              as isCanSplit,
+       o.is_auto_submit            as isAutoSubmit,
+       o.is_receive_package_later  as isReceivePackageLater,
+       o.exception                 as exception,
+       o.data_status               as dataStatus,
+       o.created_date              as createdDate,
+       o.modified_date             as modifiedDate,
+       o.created_by                as createdBy,
+       o.modified_by               as modifiedBy,
+       om.orderMemberVO            as orderMemberVO,
+       sm.salesMemberVO            as salesMemberVO,
+       ba.bcAddressVO              as bcAddressVO,
+       os.ordersStatusVO           as ordersStatusVO,
+       c.customerVO                as customerVO,
+       s.shopVO                    as shopVO,
+       ll.lmLogisticsVOList        as lmLogisticsVOList,
+       osc.ordersSubmitChainVOList as ordersSubmitChainVOList,
+       orb.ordersReturnBillVOList  as ordersReturnBillVOList
+from orders o
+         left join (select id,
+                           JSON_OBJECT('id', id, 'name', name, 'mobile', mobile, 'uniqueCode',
+                                       unique_code) as orderMemberVO
+                    from member) om on om.id = o.order_member_id
+         left join (select id,
+                           JSON_OBJECT('id', id, 'name', name, 'mobile', mobile, 'uniqueCode',
+                                       unique_code) as salesMemberVO
+                    from member) sm on sm.id = o.sales_member_id
+         left join (select order_id,
+                           JSON_OBJECT('splitStatus', split_status, 'payDate', DATE_FORMAT(pay_date, '%Y-%m-%dT%T'), 'submitStatus',
+                                       submit_status) as ordersStatusVO
+                    from orders_status) os on os.order_id = o.id
+         left join (select id,
+                           JSON_OBJECT('id', id, 'orderId', order_id, 'provinceId', province_id, 'cityId', city_id,
+                                       'districtId', district_id, 'name', name, 'mobile', mobile, 'address',
+                                       address) as bcAddressVO
+                    from bc_address) ba on ba.id = o.address_id
+         left join (select id, JSON_OBJECT('id', id, 'name', name, 'mobile', mobile) as customerVO from customer) c
+                   on c.id = o.customer_id
+         left join (select id, JSON_OBJECT('id', id, 'name', name) as shopVO from shop) s on s.id = o.shop_id
+         left join (select biz_id,
+                           biz_type,
+                           group_concat(JSON_OBJECT('id', id, 'shippingNo', shipping_no)separator ';') as lmLogisticsVOList
+                    from lm_logistics
+                    group by biz_id, biz_type) ll on ll.biz_id = o.id
+         left join (select order_id,
+                           GROUP_CONCAT(JSON_OBJECT('id', id, 'status', status)separator ';') as ordersSubmitChainVOList
+                    from orders_submit_chain
+                    GROUP BY order_id) osc on osc.order_id = o.id
+         left join (select order_id,
+                           GROUP_CONCAT(JSON_OBJECT('id', id, 'returnType', return_type) separator ';') as ordersReturnBillVOList
+                    from orders_return_bill
+                    group by order_id) orb on orb.order_id = o.id"
+  objFields:
+    saleMemberVO: object
+    orderMemberVO: object
+    bcAddressVO: object
+    ordersStatusVO: object
+    customerVO: object
+    shopVO: object
+    lmLogisticsVOList: array:;
+#    ordersItemVOList: array:;
+    ordersSubmitChainVOList: array:;
+    ordersReturnBillVOList: array:;
   etlCondition: "where a.c_time>={}"
-  commitBatch: 1
-  #objFields:
-  #  labels: array:;
+  commitBatch: 3000

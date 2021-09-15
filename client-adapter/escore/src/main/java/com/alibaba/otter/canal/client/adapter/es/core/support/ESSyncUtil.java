@@ -44,10 +44,10 @@ public class ESSyncUtil {
             String[] values = val.toString().split(separator);
             return Arrays.asList(values);
         } else if (fieldInfo.startsWith("object")) {
-            if (val instanceof String){
+            if (val instanceof String) {
                 return JSON.parse(val.toString());
             }
-            return JSON.parse(new String((byte[])val));
+            return JSON.parse(new String((byte[]) val));
         }
         return null;
     }
@@ -119,9 +119,9 @@ public class ESSyncUtil {
             } else if (val instanceof java.sql.Timestamp) {
                 DateTime dateTime = new DateTime(((java.sql.Timestamp) val).getTime());
                 if (dateTime.getMillisOfSecond() != 0) {
-                    res = dateTime.toString("yyyy-MM-dd'T'HH:mm:ss.SSS" + Util.timeZone);
+                    res = dateTime.toString("yyyy-MM-dd HH:mm:ss");
                 } else {
-                    res = dateTime.toString("yyyy-MM-dd'T'HH:mm:ss" + Util.timeZone);
+                    res = dateTime.toString("yyyy-MM-dd HH:mm:ss");
                 }
             } else if (val instanceof java.sql.Date || val instanceof Date) {
                 DateTime dateTime;
@@ -131,37 +131,37 @@ public class ESSyncUtil {
                     dateTime = new DateTime(((Date) val).getTime());
                 }
                 if (dateTime.getHourOfDay() == 0 && dateTime.getMinuteOfHour() == 0 && dateTime.getSecondOfMinute() == 0
-                    && dateTime.getMillisOfSecond() == 0) {
-                    res = dateTime.toString("yyyy-MM-dd");
+                        && dateTime.getMillisOfSecond() == 0) {
+                    res = dateTime.toString("yyyy-MM-dd HH:mm:ss");
                 } else {
                     if (dateTime.getMillisOfSecond() != 0) {
-                        res = dateTime.toString("yyyy-MM-dd'T'HH:mm:ss.SSS" + Util.timeZone);
+                        res = dateTime.toString("yyyy-MM-dd HH:mm:ss");
                     } else {
-                        res = dateTime.toString("yyyy-MM-dd'T'HH:mm:ss" + Util.timeZone);
+                        res = dateTime.toString("yyyy-MM-dd HH:mm:ss");
                     }
                 }
             } else if (val instanceof Long) {
                 DateTime dateTime = new DateTime(((Long) val).longValue());
                 if (dateTime.getHourOfDay() == 0 && dateTime.getMinuteOfHour() == 0 && dateTime.getSecondOfMinute() == 0
-                    && dateTime.getMillisOfSecond() == 0) {
+                        && dateTime.getMillisOfSecond() == 0) {
                     res = dateTime.toString("yyyy-MM-dd");
                 } else if (dateTime.getMillisOfSecond() != 0) {
-                    res = dateTime.toString("yyyy-MM-dd'T'HH:mm:ss.SSS" + Util.timeZone);
+                    res = dateTime.toString("yyyy-MM-ddTHH:mm:ss.SSS");
                 } else {
-                    res = dateTime.toString("yyyy-MM-dd'T'HH:mm:ss" + Util.timeZone);
+                    res = dateTime.toString("yyyy-MM-ddTHH:mm:ss");
                 }
             } else if (val instanceof String) {
                 String v = ((String) val).trim();
                 if (v.length() > 18 && v.charAt(4) == '-' && v.charAt(7) == '-' && v.charAt(10) == ' '
-                    && v.charAt(13) == ':' && v.charAt(16) == ':') {
+                        && v.charAt(13) == ':' && v.charAt(16) == ':') {
                     String dt = v.substring(0, 10) + "T" + v.substring(11);
                     Date date = Util.parseDate(dt);
                     if (date != null) {
                         DateTime dateTime = new DateTime(date);
                         if (dateTime.getMillisOfSecond() != 0) {
-                            res = dateTime.toString("yyyy-MM-dd'T'HH:mm:ss.SSS" + Util.timeZone);
+                            res = dateTime.toString("yyyy-MM-ddTHH:mm:ss.SSS");
                         } else {
-                            res = dateTime.toString("yyyy-MM-dd'T'HH:mm:ss" + Util.timeZone);
+                            res = dateTime.toString("yyyy-MM-ddTHH:mm:ss");
                         }
                     }
                 } else if (v.length() == 10 && v.charAt(4) == '-' && v.charAt(7) == '-') {
@@ -266,7 +266,7 @@ public class ESSyncUtil {
 
         for (ColumnItem idColumnItem : schemaItem.getIdFieldItem(mapping).getColumnItems()) {
             if ((mainTable.getAlias() == null && idColumnItem.getOwner() == null)
-                || (mainTable.getAlias() != null && mainTable.getAlias().equals(idColumnItem.getOwner()))) {
+                    || (mainTable.getAlias() != null && mainTable.getAlias().equals(idColumnItem.getOwner()))) {
                 idColumns.add(idColumnItem);
             }
         }

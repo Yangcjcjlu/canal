@@ -1,0 +1,23 @@
+dataSourceKey: defaultDS
+outerAdapterKey: orders_item
+destination: example
+groupId: g1
+esMapping:
+  _index: orders_item_v1
+  _type: orders_item_latest
+  _id: id
+  upsert: true
+  sql: "select
+    oi.id as id,
+    oi.order_id as orderId,
+    oi.goods_id as goodsId,
+    oi.sku_id as skuId,
+    oi.sku_value as skuValue,
+    oi.goods_count as goodsCount,
+    oi.return_count as returnCount
+    from orders_item oi"
+  etlCondition: "where t.c_time>={}"
+  commitBatch: 3000
+
+
+

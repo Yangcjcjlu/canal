@@ -22,6 +22,6 @@ esMapping:
        bmi.exec_date    as exec_date
 from bi_mq_info bmi"
   etlCondition: "where a.c_time>={}"
-  commitBatch: 1
+  commitBatch: 3000
   #objFields:
   #  labels: array:;
